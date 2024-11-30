@@ -41,6 +41,7 @@ namespace AuctionService.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuctionDto>> GetAuctionById (Guid id)
         {
             var auction = await _context.Auctions

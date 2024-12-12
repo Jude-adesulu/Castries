@@ -5,8 +5,6 @@ EXPOSE 80
 # copy all .csproj files and restore as distinct layers.  Use the same COPY
 # for every dockerfile in the project to take advantage of Docker caching
 #COPY src/AuctionService/nuget.config ./
-ADD src/AuctionService/CA-cert.cer /usr/local/share/ca-certificates/ca-cert.crt
-RUN chmod 644 /usr/local/share/ca-certificates/ca-cert.crt && update-ca-certificates
 COPY Carsties.sln Carsties.sln
 COPY src/AuctionService/AuctionService.csproj src/AuctionService/AuctionService.csproj
 COPY src/SearchService/SearchService.csproj src/SearchService/SearchService.csproj
@@ -19,13 +17,13 @@ COPY src/BiddingService/BiddingService.csproj src/BiddingService/BiddingService.
 RUN dotnet restore Carsties.sln 
 
 # Copy the app folders over
-COPY src/IdentityService src/IdentityService
+COPY src/BiddingService src/BiddingService
 COPY src/Contracts src/Contracts
-WORKDIR /app/src/IdentityService
+WORKDIR /app/src/BiddingService
 RUN dotnet publish -c Release -o /app/src/out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/src/out .
-ENTRYPOINT [ "dotnet", "IdentityService.dll" ]
+ENTRYPOINT [ "dotnet", "BiddingService.dll" ]

@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
 WORKDIR /app
 EXPOSE 80
-
 # copy all .csproj files and restore as distinct layers.  Use the same COPY
 # for every dockerfile in the project to take advantage of Docker caching
 #COPY src/AuctionService/nuget.config ./
@@ -11,6 +10,7 @@ COPY src/SearchService/SearchService.csproj src/SearchService/SearchService.cspr
 COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.csproj
 COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj
 COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
+COPY src/BiddingService/BiddingService.csproj src/BiddingService/BiddingService.csproj
 
 # Restore package deps
 RUN dotnet restore Carsties.sln 
